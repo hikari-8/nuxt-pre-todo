@@ -1,8 +1,11 @@
 <template>
-    <div>
-        <div>{{ name }}</div>
-        <div>
+    <div class="todo_container">
+        <div class="name">{{ name }}</div>
+        <div class="button_status">
             <button @click="changeStatus" :style="style">{{ status }}</button>
+        </div>
+        <div class="button_remove">
+            <button @click="removeItem">✖️</button>
         </div>
     </div>
 </template>
@@ -28,6 +31,17 @@ import { ToDoItem } from "~/types";
                     return "完了";
             }
         }
+        public get style() {
+            switch(this.toDoItem.status) {
+                case "PENDING":
+                    return { backgroundColor: "red", color: "white" };
+                case "DOING":
+                        return { backgroundColor: "green", color: "white"};
+                case "DONE":
+                    return { backgroundColor: "blue", color: "white"};
+            }
+        }
+
         public changeStatus() {
             switch (this.toDoItem.status) {
                 case "PENDING":
@@ -40,6 +54,9 @@ import { ToDoItem } from "~/types";
                     this.toDoItem.status ="PENDING";
                     break;
             }
+        }
+        public removeItem() {
+            this.$emit("remove");
         }
     }
 </script>

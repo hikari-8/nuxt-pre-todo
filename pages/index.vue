@@ -1,23 +1,24 @@
 <template>
     <div class="app_container">
         <div class="button_container">
-            <input v-model="newToDoName" />
+            <!-- <input v-model="newToDoName" /> -->
+            <app-input v-model="newToDoName" />
             <button @click="addToDo" :disabled="!newToDoName">ToDoを追加</button>
         </div>
 
         <div class="todo_container">
             <div v-for="toDo of toDoItems" :key="toDo.createdAt">
-                <div>{{ toDo.name }}</div>
+                <to-do-item-card :toDoItem="toDo" @remove="removeItem(toDo)" />
             </div>
         </div>
-
     </div>
 </template>
 
 
 <script lang="ts">
 import { Vue, Component } from "nuxt-property-decorator";
-import { ToDoItem, TODO_STATUS } from "@/types";
+import { ToDoItem } from "@/types";
+
 import ToDoItemCard from "@/components/ToDoItemCard.vue";
 
 @Component({
@@ -40,6 +41,9 @@ export default class TopPage extends Vue {
     }
         this.newToDoName = "";
     }
+    public removeItem(toDo: ToDoItem) {
+        this.toDoItems = this.toDoItems.filter((item) => item !== toDo);
+    }
 }
 </script>
 
@@ -52,8 +56,17 @@ export default class TopPage extends Vue {
         width: 100%;
     }
     .todo_container {
-        text-align: center;
-        width: 100%;
+        display: flex;
+        jistify-content: center;
+    }
+    .name {
+        padding-right: 10px;
+    }
+    .button_status {
+        padding-right: 10px;
+    }
+    .button_remove {
+
     }
 }
 </style>
